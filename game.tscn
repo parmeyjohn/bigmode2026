@@ -1,0 +1,73 @@
+[gd_scene format=3 uid="uid://b403as81wm33k"]
+
+[ext_resource type="Script" uid="uid://d27dcaxna41oy" path="res://player.gd" id="1_80nbo"]
+
+[sub_resource type="Gradient" id="Gradient_80nbo"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_e2o6t"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_feb5d"]
+noise = SubResource("FastNoiseLite_e2o6t")
+color_ramp = SubResource("Gradient_80nbo")
+seamless = true
+invert = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_80nbo"]
+sky_top_color = Color(0.73100173, 0.18277624, 0.5778404, 1)
+sky_horizon_color = Color(8.6635355e-06, 0.71360314, 0.95745546, 1)
+sky_curve = 0.0955921
+sky_cover = SubResource("NoiseTexture2D_feb5d")
+sky_cover_modulate = Color(0.6399783, 0.68675494, 0.033315334, 1)
+ground_bottom_color = Color(0.000600768, 0.22016957, 0.7520428, 1)
+ground_horizon_color = Color(0.48045814, 0.39806765, 1, 1)
+ground_curve = 1.522187
+sun_angle_max = 17.88
+sun_curve = 0.06529131
+
+[sub_resource type="Sky" id="Sky_80nbo"]
+sky_material = SubResource("ProceduralSkyMaterial_80nbo")
+
+[sub_resource type="Environment" id="Environment_mwb40"]
+background_mode = 2
+sky = SubResource("Sky_80nbo")
+ambient_light_energy = 1.13
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_mwb40"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_80nbo"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e2o6t"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_feb5d"]
+
+[node name="Game" type="Node3D" unique_id=1300310789]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2091766378]
+environment = SubResource("Environment_mwb40")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="WorldEnvironment" unique_id=1312704616]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/StaticBody3D" unique_id=763808818]
+shape = SubResource("WorldBoundaryShape3D_mwb40")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/StaticBody3D/CollisionShape3D" unique_id=2059831230]
+transform = Transform3D(9.797847, 0, 0, 0, -4.9845314, 0, 0, 0, 10.896633, 0, 0, 0)
+mesh = SubResource("PlaneMesh_80nbo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=469263723]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 56.987846, 0)
+light_energy = 8.175
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=920255760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.851618, 4.7491646)
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=96741723]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2972226, 0)
+script = ExtResource("1_80nbo")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1406032581]
+shape = SubResource("CapsuleShape3D_e2o6t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CollisionShape3D" unique_id=755521279]
+mesh = SubResource("CapsuleMesh_feb5d")
