@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://b403as81wm33k"]
 
 [ext_resource type="Script" uid="uid://d27dcaxna41oy" path="res://player.gd" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://b76mp7u78jn30" path="res://floating.gd" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://cxkr7gngxqift" path="res://beef.tscn" id="3_fc0e3"]
+[ext_resource type="Script" uid="uid://ddni11byw5w4y" path="res://spawn_particles.gd" id="3_feb5d"]
 
 [sub_resource type="Gradient" id="Gradient_80nbo"]
 
@@ -30,17 +33,38 @@ sky_material = SubResource("ProceduralSkyMaterial_80nbo")
 [sub_resource type="Environment" id="Environment_mwb40"]
 background_mode = 2
 sky = SubResource("Sky_80nbo")
+ambient_light_color = Color(0.4417106, 0.6192206, 1, 1)
 ambient_light_energy = 1.13
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_mwb40"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_80nbo"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_e2o6t"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_feb5d"]
 
-[node name="Game" type="Node3D" unique_id=1300310789]
+[sub_resource type="BoxMesh" id="BoxMesh_80nbo"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_e2o6t"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_feb5d"]
+albedo_color = Color(0.34870103, 0.13711277, 0.22795287, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fc0e3"]
+material = SubResource("StandardMaterial3D_feb5d")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_80nbo"]
+albedo_color = Color(0.9333167, 0.11775663, 5.7756904e-07, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_e2o6t"]
+material = SubResource("StandardMaterial3D_80nbo")
+inner_radius = 0.901
+outer_radius = 0.948
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fc0e3"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_7jktm"]
+
+[node name="Game" type="Node" unique_id=1230410997]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2091766378]
 environment = SubResource("Environment_mwb40")
@@ -50,24 +74,81 @@ environment = SubResource("Environment_mwb40")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/StaticBody3D" unique_id=763808818]
 shape = SubResource("WorldBoundaryShape3D_mwb40")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/StaticBody3D/CollisionShape3D" unique_id=2059831230]
-transform = Transform3D(9.797847, 0, 0, 0, -4.9845314, 0, 0, 0, 10.896633, 0, 0, 0)
-mesh = SubResource("PlaneMesh_80nbo")
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=469263723]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 56.987846, 0)
+transform = Transform3D(0.9119687, 0.057708904, 0.40618068, -0.25181365, -0.70288134, 0.66524255, 0.3238873, -0.70896226, -0.6264739, 0, 56.987846, 0)
 light_energy = 8.175
 shadow_enabled = true
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=920255760]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.851618, 4.7491646)
 
 [node name="Player" type="CharacterBody3D" parent="." unique_id=96741723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2972226, 0)
 script = ExtResource("1_80nbo")
 
+[node name="Floating" type="Node3D" parent="Player" unique_id=1404271442]
+script = ExtResource("2_e2o6t")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=1406032581]
 shape = SubResource("CapsuleShape3D_e2o6t")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player/CollisionShape3D" unique_id=755521279]
+[node name="ModelMesh" type="MeshInstance3D" parent="Player/CollisionShape3D" unique_id=755521279]
 mesh = SubResource("CapsuleMesh_feb5d")
+
+[node name="VehicleMesh" type="MeshInstance3D" parent="Player" unique_id=2035745383]
+transform = Transform3D(1.6845517, 0, 0, 0, 0.5118653, 0, 0, 0, 2.8720276, 0, -0.9618044, 0)
+mesh = SubResource("BoxMesh_80nbo")
+
+[node name="CameraPivot" type="Node3D" parent="Player" unique_id=2122016227]
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraPivot" unique_id=920255760]
+transform = Transform3D(1, 0, 0, 0, 0.9550355, 0.2964916, 0, -0.2964916, 0.9550355, 0, 1.9167304, 4.387187)
+current = true
+fov = 90.0
+
+[node name="Beef" parent="." unique_id=1516674344 instance=ExtResource("3_fc0e3")]
+
+[node name="Beef2" type="StaticBody3D" parent="." unique_id=1165257427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.329338, 0, 14.535213)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Beef2" unique_id=542450395]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15.576463)
+shape = SubResource("SphereShape3D_e2o6t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Beef2/CollisionShape3D" unique_id=605858352]
+transform = Transform3D(4.25, 0, 0, 0, 4.25, 0, 0, 0, 4.25, 0, 0, 0)
+mesh = SubResource("SphereMesh_fc0e3")
+
+[node name="Beef" type="StaticBody3D" parent="Beef2" unique_id=647052286]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.25491, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Beef2/Beef" unique_id=688076587]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15.576463)
+shape = SubResource("SphereShape3D_e2o6t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Beef2/Beef/CollisionShape3D" unique_id=1114821281]
+transform = Transform3D(4.25, 0, 0, 0, 4.25, 0, 0, 0, 4.25, 0, 0, 0)
+mesh = SubResource("SphereMesh_fc0e3")
+
+[node name="Beef" type="StaticBody3D" parent="Beef2/Beef" unique_id=415593373]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.040031, 0, 17.037598)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Beef2/Beef/Beef" unique_id=1373670317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15.576463)
+shape = SubResource("SphereShape3D_e2o6t")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Beef2/Beef/Beef/CollisionShape3D" unique_id=110983992]
+transform = Transform3D(4.25, 0, 0, 0, 4.25, 0, 0, 0, 4.25, 0, 0, 0)
+mesh = SubResource("SphereMesh_fc0e3")
+
+[node name="Bowl" type="MeshInstance3D" parent="." unique_id=2087612699]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 0, 0, 0)
+mesh = SubResource("TorusMesh_e2o6t")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1622206594]
+mesh = SubResource("PlaneMesh_fc0e3")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="." unique_id=251035424]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CPUParticles3D" unique_id=595912376]
+mesh = SubResource("BoxMesh_7jktm")
+
+[node name="ParticleSpawner" type="Node3D" parent="." unique_id=552727481]
+script = ExtResource("3_feb5d")
